@@ -27,17 +27,21 @@ public class StatisticalAnalysis {
     private double pm10_min = 0;
     private double pm10_max = 10;
 
-    // WHO guideline values (see http://www.who.int/mediacentre/factsheets/fs313/en/)
-    private double pm2_5_annual_mean = 10;  // ug per m3
-    private double pm2_5_24h_mean = 25;     // ug per m3
+    // WHO recommended guideline values (see http://www.who.int/mediacentre/factsheets/fs313/en/)
+    private double who_pm2_5_annual_mean = 10;  // ug per m3
+    private double who_pm2_5_24h_mean = 25;     // ug per m3
 
-    private double pm10_annual_mean = 20;   // ug per m3
-    private double pm10_24h_mean = 50;      // ug per m3
+    private double who_pm10_annual_mean = 20;   // ug per m3
+    private double who_pm10_24h_mean = 50;      // ug per m3
 
-    private double o3_8h_mean = 100;        // ug per m3
+    private double who_o3_8h_mean = 100;        // ug per m3
 
-    private double no2_annual_mean = 40;    // ug per m3
-    private double no2_1h_mean = 200;       // ug per m3
+    private double who_no2_annual_mean = 40;    // ug per m3
+    private double who_no2_1h_mean = 200;       // ug per m3
+
+    // Computed values in data
+    private double no2_annual_mean = 0;
+    private double no2_1h_mean = 0;
 
     // Update frequency of PersonalPollutionDataPoint
     private double updateTime = 15;         // minutes
@@ -50,20 +54,15 @@ public class StatisticalAnalysis {
     //
     public void analyse() {
         
-        ArrayList<Double> no2_values = getRelevantNo2Values();
+        computeRelevantNo2Values();
         
-        System.out.println("NO2-levels are:");
-        System.out.println("\tannual mean: " + no2_values.get(0));
-        System.out.println("\t1h mean:     " + no2_values.get(1));
+        System.out.println("NO2-levels are: (recommended)");
+        System.out.println("\tannual mean: " + no2_annual_mean + " (" + who_no2_annual_mean + ")");
+        System.out.println("\t1h mean:     " + no2_1h_mean + " (" + who_no2_1h_mean + ")");
     }
 
     // Get relevant NO2 amounts based on the WHO guideline levels
-    private ArrayList<Double> getRelevantNo2Values(){
-
-        ArrayList<Double> no2_values = new ArrayList<Double>();
-
-        double no2_annual_mean = 0;
-        double no2_1h_mean = 0;
+    private void computeRelevantNo2Values(){
 
         int no2_annual_mean_pointnumber = 0;
         int no2_1h_mean_pointnumber = 0;
@@ -75,42 +74,42 @@ public class StatisticalAnalysis {
         Date dateOneYearBefore = new Date(dateNow.getTime() - TimeUnit.DAYS.toMillis(365)); //subtracts one year
         Date dateOneHourBefore = new Date(dateNow.getTime() - TimeUnit.HOURS.toMillis(1));  //subtracts one hour
 
-//        System.out.println("Now: " + dateNow);
-
         if (dataPoints == null) {
             throw new RuntimeException("Null dataPoints");
         }
 
-
+        // Iterate over all data points to compute WHO recommended values for comparison
         for (PersonalPollutionDataPoint point : dataPoints) {
-            // Save latest value in case one point for interpolation is not given
+            // Save latest value in case future point will not be given (i.e. use last information in case no value available)
             if (point.haveNo2()) {
                 no2_latest_value = point.getNo2();
             }
 
             Date date = point.getDate();
 
+            // Annual average
             if (date.after(dateOneYearBefore)){
                 no2_annual_mean += no2_latest_value;
                 no2_annual_mean_pointnumber += 1;
 
+                // One hour average
                 if (date.after(dateOneHourBefore)){
-                    System.out.println(point.getDate() + ": " + point.getNo2());
-
                     no2_1h_mean += no2_latest_value;
                     no2_1h_mean_pointnumber += 1;
                 }
-
             }
         }
 
-        no2_annual_mean /= no2_annual_mean_pointnumber;
-        no2_1h_mean /= no2_1h_mean_pointnumber;
+        // Normalize to get annual and one hour average
+        no2_annual_mean /=  (double) no2_annual_mean_pointnumber;
+        no2_1h_mean /= (double) no2_1h_mean_pointnumber;
+    }
 
-        no2_values.add(no2_annual_mean);
-        no2_values.add(no2_1h_mean);
+    public double getNo2_annual_mean() {
+        return no2_annual_mean;
+    }
 
-        return no2_values;
-
+    public double getNo2_1h_mean() {
+        return no2_1h_mean;
     }
 }

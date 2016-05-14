@@ -25,11 +25,10 @@ public class ExampleUnitTest {
         Date date_now = new Date();
 
         int sampling_time = 6; // in min, i.e. sampling every 6 minutes
-        double pollution_hour = (double) 60/sampling_time*(60/sampling_time - 1)/2/(60/sampling_time);
-        double pollution_year = (double) 60/sampling_time*365*(60/sampling_time - 1)/2 * 24 * 365;
+        double pollution_hour = (60./sampling_time-1)/2.;
+        double pollution_year = (60./sampling_time*24*365-1)/2.;
 
-//        int N_points = 365*60*60/sampling_time;
-        int N_points = 15;
+        int N_points = 365*24*60/sampling_time-1; //At least that to
 
         for (int i=N_points; i>=0; i--){
             PersonalPollutionDataPoint dataPoint = new PersonalPollutionDataPoint();
@@ -43,20 +42,14 @@ public class ExampleUnitTest {
 
             // Add point to personal list
             dataPoints.add(dataPoint);
-
-            System.out.println(dataPoints.get(N_points-i).getDate() + ": " + dataPoints.get(N_points-i).getNo2());
         }
-        System.out.println("\n");
-        System.out.println("pollution hour: " + pollution_hour);
-        System.out.println("pollution year: " + pollution_year);
 
         StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis();
         statisticalAnalysis.setDataPoints(dataPoints);
         statisticalAnalysis.analyse();
 
-        System.out.println("NO2-levels are:");
-        System.out.println(date_now);
-        assertEquals(4, 2 + 2);
+        assertEquals(pollution_hour, statisticalAnalysis.getNo2_1h_mean(), 1e-8);
+        assertEquals(pollution_year, statisticalAnalysis.getNo2_annual_mean(), 1e-8);
     }
 
 }
