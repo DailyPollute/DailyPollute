@@ -1,5 +1,6 @@
 package com.github.dailypollute;
 
+import java.util.Date;
 
 /**
  * Stores pollution for a particular location
@@ -12,6 +13,10 @@ public class PersonalPollutionDataPoint {
     private Double o3 = null;
     private Double pm10 = null;
     private Double pm2_5 = null;
+
+    private Double temperature = null;
+
+    private Date date = null;
 
     public boolean haveNo2() {
         return (no2 != null);
@@ -75,5 +80,21 @@ public class PersonalPollutionDataPoint {
 
     public void setPm2_5(Double pm2_5) {
         this.pm2_5 = pm2_5;
+    }
+
+    public Double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
