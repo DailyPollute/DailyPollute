@@ -9,6 +9,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+
 public class HomePage extends AppCompatActivity {
 
     @Override
@@ -41,6 +48,8 @@ public class HomePage extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        new FetchData().execute("");
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
