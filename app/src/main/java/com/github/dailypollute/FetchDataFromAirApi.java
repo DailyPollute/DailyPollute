@@ -21,7 +21,7 @@ public class FetchDataFromAirApi {
         final String longitudeString = new Double(longitude).toString();
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("geometryType", "esriGeometryPoint"));
-        params.add(new BasicNameValuePair("geometry", latitudeString + "," + longitudeString));
+        params.add(new BasicNameValuePair("geometry", longitudeString + "," + latitudeString));
         params.add(new BasicNameValuePair("sr", ""));
         params.add(new BasicNameValuePair("layers", ""));
         params.add(new BasicNameValuePair("time", ""));
