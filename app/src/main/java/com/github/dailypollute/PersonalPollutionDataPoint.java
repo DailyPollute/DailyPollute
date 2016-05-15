@@ -18,6 +18,28 @@ public class PersonalPollutionDataPoint {
 
     private Date date = null;
 
+    public PersonalPollutionDataPoint(double latitude, double longitude, Double no2, Double o3, Double pm10, Double pm2_5, Double temperature, Date date) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.no2 = no2;
+        this.o3 = o3;
+        this.pm10 = pm10;
+        this.pm2_5 = pm2_5;
+        this.temperature = temperature;
+        this.date = date;
+    }
+
+    public PersonalPollutionDataPoint(PersonalPollutionDataPoint point) {
+        this.latitude = point.getLatitude();
+        this.longitude = point.getLongitude();
+        this.no2 = point.getNo2();
+        this.o3 = point.getO3();
+        this.pm10 = point.getPm10();
+        this.pm2_5 = point.getPm2_5();
+        this.temperature = point.getTemperature();
+        this.date = point.getDate();
+    }
+
     public boolean haveNo2() {
         return (no2 != null);
     }

@@ -12,8 +12,8 @@ public class PersonalPollutionData {
 
     private List<PersonalPollutionDataPoint> dataPoints = new ArrayList<PersonalPollutionDataPoint>();
 
-    public void addPoint(double latitude, double longitude, Double no2, Double o3, Double pm10, Double pm2_5, Double temperature, Date date) {
-        PersonalPollutionDataPoint newPoint = new PersonalPollutionDataPoint();
+    public synchronized  void addPoint(double latitude, double longitude, Double no2, Double o3, Double pm10, Double pm2_5, Double temperature, Date date) {
+        PersonalPollutionDataPoint newPoint = new PersonalPollutionDataPoint(latitude, longitude, no2, o3, pm10, pm2_5, temperature, date);
         newPoint.setLatitude(latitude);
         newPoint.setLongitude(longitude);
         newPoint.setNo2(no2);
@@ -28,8 +28,12 @@ public class PersonalPollutionData {
         //TODO: if point collection contains more than one year than delete the oldest ones
     }
 
-    public List<PersonalPollutionDataPoint> getPoints() {
-        return this.dataPoints;
+    public synchronized List<PersonalPollutionDataPoint> getPoints() {
+        ArrayList<PersonalPollutionDataPoint> newList = new ArrayList<PersonalPollutionDataPoint>();
+        for (PersonalPollutionDataPoint point : dataPoints) {
+            newList.add(new PersonalPollutionDataPoint(point));
+        }
+        return newList;
     }
 
 }
