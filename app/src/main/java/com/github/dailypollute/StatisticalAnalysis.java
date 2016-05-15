@@ -1,8 +1,5 @@
 package com.github.dailypollute;
 
-import android.text.format.DateUtils;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -83,6 +80,11 @@ public class StatisticalAnalysis {
         System.out.println("\t1h mean:     " + no2_1hMean + " (" + who_no2_1hMean + ")");
 
     }
+
+    public void showAnalysis() {
+
+    }
+
 
 
     // Get relevant PM2.5 amounts based on the WHO guideline levels
@@ -280,4 +282,33 @@ public class StatisticalAnalysis {
     public double getPm2_5_annualMean() {
         return pm2_5_annualMean;
     }
+
+    public double getRelativePm2_5_24hMean() {
+        return pm2_5_24hMean / (double) who_pm2_5_24hMean;
+    }
+
+    public double getRelativePm2_5_annualMean() {
+        return pm2_5_annualMean / (double) who_pm2_5_annualMean;
+    }
+
+    public double getRelativePm10_24hMean() {
+        return pm10_24hMean / (double) who_pm10_24hMean;
+    }
+
+    public double getRelativePm10_annualMean() {
+        return pm10_annualMean / (double) who_pm10_annualMean;
+    }
+
+    public double getRelativeNo2_1hMean() {
+        return no2_1hMean / (double) who_no2_1hMean;
+    }
+
+    public double getRelativeNo2_annualMean() {
+        return no2_annualMean / (double) who_no2_annualMean;
+    }
+
+    public double getRelativeO3_8hMean() {
+            return o3_8hMean / (double) who_o3_8hMean;
+    }
+
 }

@@ -32,7 +32,7 @@ public class ExampleUnitTest {
         
         double pollution_o3_8hMean = (60./sampling_time*8-1)/2.;
 
-        int N_points = 365*24*60/sampling_time-1; //At least that number to have sampled on entire year
+        int N_points = 365*24*60/sampling_time-1; //At least that number in order to have sampled one entire year
 
         for (int i=N_points; i>=0; i--){
             PersonalPollutionDataPoint dataPoint = new PersonalPollutionDataPoint();
