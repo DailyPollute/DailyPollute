@@ -7,12 +7,13 @@ import java.util.Date;
 
 public class FetchData extends AsyncTask<String, Void, String> {
 
-        private Exception exception;
+    private Exception exception;
+    private PersonalPollutionData pollutionData;
 
+    public FetchData(final PersonalPollutionData pollutionData) {
+        this.pollutionData = pollutionData;
+    }
         protected String doInBackground(String... urls) {
-
-            // This will need to persist
-            PersonalPollutionData pollutionData = new PersonalPollutionData();
 
             double latitude = -0.13;
             double longitude = 51.51;

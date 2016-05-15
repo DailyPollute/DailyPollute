@@ -1,11 +1,12 @@
 package com.github.dailypollute;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Stores pollution for a particular location
  */
-public class PersonalPollutionDataPoint {
+public class PersonalPollutionDataPoint implements Serializable {
     private double latitude = 0;
     private double longitude = 0;
 
@@ -18,6 +19,9 @@ public class PersonalPollutionDataPoint {
 
     private Date date = null;
 
+    public PersonalPollutionDataPoint() {
+
+    }
     public PersonalPollutionDataPoint(double latitude, double longitude, Double no2, Double o3, Double pm10, Double pm2_5, Double temperature, Date date) {
         this.latitude = latitude;
         this.longitude = longitude;

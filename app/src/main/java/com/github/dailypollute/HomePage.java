@@ -1,5 +1,6 @@
 package com.github.dailypollute;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,9 +19,14 @@ import java.util.ArrayList;
 
 public class HomePage extends AppCompatActivity {
 
+    private PersonalPollutionData data;
+
+    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HomePage.context = getApplicationContext();
         setContentView(R.layout.activity_home_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,6 +39,13 @@ public class HomePage extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        data = PersonalPollutionData.getInstance();
+    }
+
+
+    public static Context getAppContext() {
+        return HomePage.context;
     }
 
     @Override
@@ -49,7 +62,7 @@ public class HomePage extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        new FetchData().execute("");
+        new FetchData(data).execute("");
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
