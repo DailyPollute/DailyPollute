@@ -1,6 +1,7 @@
 package com.github.dailypollute;
 
 import android.graphics.Color;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,14 +22,45 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
+
+
 public class HomePage extends AppCompatActivity {
 
+    private PersonalPollutionData data;
+
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HomePage.context = getApplicationContext();
+        setContentView(R.layout.activity_home_page);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        data = PersonalPollutionData.getInstance();
+        
         showWhoComparison();
 //        showTrip();
+    }
+
+
+    public static Context getAppContext() {
+        return HomePage.context;
     }
 
     @Override
@@ -45,6 +77,8 @@ public class HomePage extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        new FetchData(data).execute("");
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -56,18 +90,6 @@ public class HomePage extends AppCompatActivity {
 
     private void showWhoComparison() {
         setContentView(R.layout.activity_home_page);
-//        setContentView(R.layout.trip_to_kings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis();
 //        statisticalAnalysis.setDataPoints(dataPoints);
@@ -175,23 +197,20 @@ public class HomePage extends AppCompatActivity {
         double who_no2_annualMean = 40;    // ug per m3
         double who_no2_1hMean = 200;       // ug per m3
 
-        setContentView(R.layout.trip_to_kings);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_home_page);
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        // fab.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //                .setAction("Action", null).show();
+        //    }
+        // });
 
-
-
-        FetchData fetchData = new FetchData();
-        List<PersonalPollutionDataPoint> dataPoints = fetchData.readData();
+        List<PersonalPollutionDataPoint> dataPoints = FetchData.readData();
         int N_points = 11;
 
         //// PM 2.5

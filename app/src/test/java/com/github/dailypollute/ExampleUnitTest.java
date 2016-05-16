@@ -16,6 +16,8 @@ public class ExampleUnitTest {
     @Test
     public void computeRelevantWhoValues() throws Exception {
 
+        PersonalPollutionData data = new PersonalPollutionData();
+
         List<PersonalPollutionDataPoint> dataPoints = new ArrayList<PersonalPollutionDataPoint>();
         Date date_now = new Date();
 
