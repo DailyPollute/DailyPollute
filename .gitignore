@@ -33,3 +33,5 @@ captures/
 
 # Intellij
 *.iml 
+
+.idea
